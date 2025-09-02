@@ -1,4 +1,4 @@
-# Letra a)
+# Letra a
 def palindrome?(string)
   clean = string.downcase.gsub(/[^a-z]/, "")
   clean == clean.reverse
@@ -9,7 +9,7 @@ puts palindrome?("Madam, I'm Adam!")
 puts palindrome?("Abracadabra")
 
 
-# Letra b)
+# Letra b
 def count_words(string)
   words = string.downcase.gsub(/[^a-z\s]/, "").split
   counts = Hash.new(0)
