@@ -6,38 +6,27 @@ class MoviesController < ApplicationController
   # GET /movies
   def index
     @all_ratings = Movie.all_ratings
-
-    # Preferências vindas da URL (params)…
     ratings_from_params = params[:ratings]&.keys
     sort_from_params    = params[:sort_by]
-
-    # …ou, se não vierem, usamos o que está salvo na sessão (ou defaults)
     ratings = ratings_from_params || session[:ratings] || @all_ratings
     sort_by = sort_from_params    || session[:sort_by]
 
-    # Se a URL não reflete o estado salvo, redireciona para a URL canônica
-    needs_redirect =
-      (ratings_from_params.nil? && session[:ratings].present?) ||
-      (sort_from_params.nil?    && session[:sort_by].present?)
-
-    if needs_redirect
+    if (ratings_from_params.nil? && session[:ratings].present?) ||
+       (sort_from_params.nil?    && session[:sort_by].present?)
       flash.keep
-      redirect_to movies_path(
-        ratings: Hash[ratings.map { |r| [ r, "1" ] }],
-        sort_by: sort_by
-      ) and return
+      redirect_to movies_path(ratings: Hash[ratings.map { |r| [ r, "1" ] }], sort_by: sort_by, q: params[:q]) and return
     end
 
-    # Atualiza sessão com o estado atual
     session[:ratings] = ratings
     session[:sort_by] = sort_by
+    @checked_ratings  = ratings
+    @sort_by          = %w[title release_date].include?(sort_by) ? sort_by : nil
 
-    @checked_ratings = ratings
-    @sort_by = %w[title release_date].include?(sort_by) ? sort_by : nil
-
-    scope   = Movie.where(rating: @checked_ratings)
+    scope = Movie.where(rating: @checked_ratings)
+    scope = scope.where("title LIKE ?", "%#{params[:q]}%") if params[:q].present?
     @movies = @sort_by.present? ? scope.order(@sort_by) : scope
     @movies = @movies.page(params[:page]).per(10)
+
     @title_header_class        = (@sort_by == "title")        ? "hilite" : nil
     @release_date_header_class = (@sort_by == "release_date") ? "hilite" : nil
   end

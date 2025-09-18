@@ -1,4 +1,12 @@
+
 <h1 class="h3 mb-3">Movies</h1>
+
+<%= form_with url: movies_path, method: :get, local: true, class: "mb-3" do %>
+  <div class="input-group">
+    <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search title..." %>
+    <button class="btn btn-outline-secondary">Search</button>
+  </div>
+<% end %>
 
 <%= form_with url: movies_path, method: :get, id: "ratings_form", local: true, class: "card mb-4" do %>
   <div class="card-body">
