@@ -1,45 +1,71 @@
-<h1>Movies</h1>
+<h1 class="h3 mb-3">Movies</h1>
 
-<%= form_with url: movies_path, method: :get, id: "ratings_form", local: true do %>
-  <p>Filter by ratings:</p>
-  <% @all_ratings.each do |rating| %>
-    <%= check_box_tag "ratings[#{rating}]", "1",
-        @checked_ratings.include?(rating),
-        id: "ratings_#{rating}" %>
-    <%= label_tag "ratings_#{rating}", rating %>
-  <% end %>
-  <!-- mantém o sort quando aplicar filtro -->
-  <%= hidden_field_tag :sort_by, @sort_by %>
-  <%= submit_tag "Refresh", id: "ratings_submit" %>
+<%= form_with url: movies_path, method: :get, id: "ratings_form", local: true, class: "card mb-4" do %>
+  <div class="card-body">
+    <p class="mb-2">Filter by ratings:</p>
+    <div class="d-flex flex-wrap gap-3 mb-3">
+      <% @all_ratings.each do |rating| %>
+        <div class="form-check">
+          <%= check_box_tag "ratings[#{rating}]", "1",
+              @checked_ratings.include?(rating),
+              id: "ratings_#{rating}", class: "form-check-input" %>
+          <%= label_tag "ratings_#{rating}", rating, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+    <!-- mantém o sort quando aplicar filtro -->
+    <%= hidden_field_tag :sort_by, @sort_by %>
+    <%= submit_tag "Refresh", id: "ratings_submit", class: "btn btn-outline-secondary" %>
+  </div>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th id="title_header" class="<%= @title_header_class %>">
-        <%= link_to "Title", movies_path(sort_by: "title") %>
-      </th>
-      <th>Rating</th>
-      <th id="release_date_header" class="<%= @release_date_header_class %>">
-        <%= link_to "Release date", movies_path(sort_by: "release_date") %>
-      </th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @movies.each do |movie| %>
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
       <tr>
-        <td><%= link_to movie.title, movie %></td>
-        <td><%= movie.rating %></td>
-        <td><%= movie.release_date %></td>
-        <td><%= movie.description %></td>
-        <td><%= link_to "Show", movie %></td>
-        <td><%= link_to "Edit", edit_movie_path(movie) %></td>
-        <td><%= link_to "Destroy", movie, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
+        <th id="title_header" class="<%= @title_header_class %>">
+          <%= link_to "Title",
+              movies_path(
+                sort_by: "title",
+                ratings: Hash[@checked_ratings.map { |r| [r, "1"] }]
+              ),
+              class: "link-dark text-decoration-none"
+          %>
+        </th>
+        <th>Rating</th>
+        <th id="release_date_header" class="<%= @release_date_header_class %>">
+          <%= link_to "Release date",
+              movies_path(
+                sort_by: "release_date",
+                ratings: Hash[@checked_ratings.map { |r| [r, "1"] }]
+              ),
+              class: "link-dark text-decoration-none"
+          %>
+        </th>
+        <th>Description</th>
+        <th class="text-end" colspan="3">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @movies.each do |movie| %>
+        <tr>
+          <td><%= link_to movie.title, movie, class: "fw-semibold" %></td>
+          <td><span class="badge text-bg-secondary"><%= movie.rating %></span></td>
+          <td><%= movie.release_date %></td>
+          <td class="text-truncate" style="max-width: 420px;"><%= movie.description %></td>
+          <td class="text-end">
+            <div class="btn-group btn-group-sm" role="group">
+              <%= link_to "Show", movie, class: "btn btn-outline-secondary" %>
+              <%= link_to "Edit", edit_movie_path(movie), class: "btn btn-outline-primary" %>
+              <%= link_to "Destroy", movie,
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                    class: "btn btn-outline-danger" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<%= link_to "New movie", new_movie_path %>
+<%= link_to "New movie", new_movie_path, class: "btn btn-primary" %>
