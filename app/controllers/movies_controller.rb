@@ -23,7 +23,7 @@ class MoviesController < ApplicationController
     if needs_redirect
       flash.keep
       redirect_to movies_path(
-        ratings: Hash[ratings.map { |r| [r, "1"] }],
+        ratings: Hash[ratings.map { |r| [ r, "1" ] }],
         sort_by: sort_by
       ) and return
     end
