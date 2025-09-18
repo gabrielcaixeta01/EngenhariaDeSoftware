@@ -1,0 +1,45 @@
+<h1>Movies</h1>
+
+<%= form_with url: movies_path, method: :get, id: "ratings_form", local: true do %>
+  <p>Filter by ratings:</p>
+  <% @all_ratings.each do |rating| %>
+    <%= check_box_tag "ratings[#{rating}]", "1",
+        @checked_ratings.include?(rating),
+        id: "ratings_#{rating}" %>
+    <%= label_tag "ratings_#{rating}", rating %>
+  <% end %>
+  <!-- mantém o sort quando aplicar filtro -->
+  <%= hidden_field_tag :sort_by, @sort_by %>
+  <%= submit_tag "Refresh", id: "ratings_submit" %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th id="title_header" class="<%= @title_header_class %>">
+        <%= link_to "Title", movies_path(sort_by: "title") %>
+      </th>
+      <th>Rating</th>
+      <th id="release_date_header" class="<%= @release_date_header_class %>">
+        <%= link_to "Release date", movies_path(sort_by: "release_date") %>
+      </th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movies.each do |movie| %>
+      <tr>
+        <td><%= link_to movie.title, movie %></td>
+        <td><%= movie.rating %></td>
+        <td><%= movie.release_date %></td>
+        <td><%= movie.description %></td>
+        <td><%= link_to "Show", movie %></td>
+        <td><%= link_to "Edit", edit_movie_path(movie) %></td>
+        <td><%= link_to "Destroy", movie, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "New movie", new_movie_path %>
