@@ -1,0 +1,9 @@
+<% disabled = current_page.first? %>
+<li class="page-item <%= 'disabled' if disabled %>">
+  <% label = raw(t('views.pagination.first', default: '« First')) %>
+  <% if disabled %>
+    <span class="page-link" aria-hidden="true"><%= label %></span>
+  <% else %>
+    <%= link_to label, url, class: "page-link", aria: { label: "First" } %>
+  <% end %>
+</li>

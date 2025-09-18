@@ -1,1 +1,13 @@
 .hilite { background-color: #ffffcc; }
+
+.pagination {
+  margin: 0;
+}
+.page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+.page-link {
+  color: #0d6efd;
+}

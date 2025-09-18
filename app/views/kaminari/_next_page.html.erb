@@ -1,0 +1,9 @@
+<% disabled = current_page.last? %>
+<li class="page-item <%= 'disabled' if disabled %>">
+  <% label = raw(t('views.pagination.next', default: 'Next ›')) %>
+  <% if disabled %>
+    <span class="page-link" aria-hidden="true"><%= label %></span>
+  <% else %>
+    <%= link_to label, url, class: "page-link", rel: "next", aria: { label: "Next" } %>
+  <% end %>
+</li>

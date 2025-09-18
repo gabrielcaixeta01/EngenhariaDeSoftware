@@ -37,10 +37,9 @@ class MoviesController < ApplicationController
 
     scope   = Movie.where(rating: @checked_ratings)
     @movies = @sort_by.present? ? scope.order(@sort_by) : scope
-
-  @movies = @movies.page(params[:page]).per(10)
-  @title_header_class        = (@sort_by == "title")        ? "hilite" : nil
-  @release_date_header_class = (@sort_by == "release_date") ? "hilite" : nil
+    @movies = @movies.page(params[:page]).per(10)
+    @title_header_class        = (@sort_by == "title")        ? "hilite" : nil
+    @release_date_header_class = (@sort_by == "release_date") ? "hilite" : nil
   end
 
   # GET /movies/1

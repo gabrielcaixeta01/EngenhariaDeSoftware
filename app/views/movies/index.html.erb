@@ -68,6 +68,10 @@
   </table>
 </div>
 
-<%= paginate @movies %>
+
+
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @movies %>
+</div>
 
 <%= link_to "New movie", new_movie_path, class: "btn btn-primary" %>
