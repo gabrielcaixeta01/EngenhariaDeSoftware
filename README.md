@@ -60,10 +60,6 @@ bundle exec rspec
 - `app/views/kaminari/`: partials customizados para paginação com Bootstrap 5
 - `db/seeds.rb`: dados de exemplo para popular o banco
 
-## Screenshots
-
-Adicione aqui capturas de tela do sistema em funcionamento (listagem, formulário, filtros, busca, paginação).
-
 ## Deploy
 
 O projeto pode ser facilmente implantado em serviços como Heroku, Render ou Railway.
