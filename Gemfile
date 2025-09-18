@@ -57,3 +57,5 @@ group :development do
 end
 
 gem "kaminari", "~> 1.2"
+
+gem "rspec-rails", "~> 8.0"
